@@ -55,15 +55,5 @@
         "DB_DATABASE": "${DB_DATABASE}",
         "DB_USERNAME": "${DB_USERNAME}",
         "DB_PASSWORD": "${DB_PASSWORD}"
-    },
-    "builds": [
-        {
-            "src": "api/index.php",
-            "use": "vercel-php@0.7.3"
-        },
-        {
-            "src": "dist/**",
-            "use": "@vercel/static"
-        }
-    ]
+    }
 } 
