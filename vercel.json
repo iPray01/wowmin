@@ -2,7 +2,7 @@
     "version": 2,
     "framework": null,
     "buildCommand": "npm run build",
-    "outputDirectory": "public",
+    "outputDirectory": "dist",
     "functions": {
         "api/*.php": {
             "runtime": "vercel-php@0.7.3"
@@ -10,12 +10,8 @@
     },
     "routes": [
         {
-            "src": "/build/assets/(.*)",
-            "dest": "/public/build/assets/$1"
-        },
-        {
-            "src": "/build/(.*)",
-            "dest": "/public/build/$1"
+            "src": "/assets/(.*)",
+            "dest": "/assets/$1"
         },
         {
             "src": "/(.*)",
@@ -50,7 +46,7 @@
             "use": "vercel-php@0.7.3"
         },
         {
-            "src": "public/**",
+            "src": "dist/**",
             "use": "@vercel/static"
         }
     ]
