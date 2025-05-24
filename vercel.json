@@ -1,12 +1,22 @@
 {
     "version": 2,
     "framework": null,
+    "buildCommand": "chmod +x vercel.build.sh && ./vercel.build.sh",
+    "outputDirectory": "public",
     "functions": {
         "api/*.php": {
             "runtime": "vercel-php@0.7.3"
         }
     },
     "routes": [
+        {
+            "src": "/build/assets/(.*)",
+            "dest": "/public/build/assets/$1"
+        },
+        {
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
+        },
         {
             "src": "/(.*)",
             "dest": "/api/index.php"
@@ -17,6 +27,7 @@
         "APP_ENV": "production",
         "APP_DEBUG": "false",
         "APP_URL": "${APP_URL}",
+        "APP_KEY": "${APP_KEY}",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
@@ -26,7 +37,13 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
-        "SESSION_LIFETIME": "120"
+        "SESSION_LIFETIME": "120",
+        "DB_CONNECTION": "${DB_CONNECTION}",
+        "DB_HOST": "${DB_HOST}",
+        "DB_PORT": "${DB_PORT}",
+        "DB_DATABASE": "${DB_DATABASE}",
+        "DB_USERNAME": "${DB_USERNAME}",
+        "DB_PASSWORD": "${DB_PASSWORD}"
     },
     "builds": [
         {
