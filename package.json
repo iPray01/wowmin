@@ -1,0 +1,24 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build && npm run vercel-build",
+        "vercel-build": "php artisan config:cache && php artisan route:cache && php artisan view:cache",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.2",
+        "alpinejs": "^3.4.2",
+        "autoprefixer": "^10.4.2",
+        "axios": "^1.6.4",
+        "laravel-vite-plugin": "^1.0.0",
+        "postcss": "^8.4.31",
+        "tailwindcss": "^3.1.0",
+        "vite": "^5.0.0"
+    },
+    "dependencies": {
+        "chart.js": "^4.4.9",
+        "select2": "^4.1.0-rc.0"
+    }
+}

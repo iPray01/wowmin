@@ -1,0 +1,118 @@
+{
+    "version": 1,
+    "framework": null,
+    "functions": {
+        "api/*.php": {
+            "runtime": "vercel-php@0.7.3"
+        }
+    },
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
+    "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "false",
+        "APP_URL": "${APP_URL}",
+        "APP_CONFIG_CACHE": "/tmp/config.php",
+        "APP_EVENTS_CACHE": "/tmp/events.php",
+        "APP_PACKAGES_CACHE": "/tmp/packages.php",
+        "APP_ROUTES_CACHE": "/tmp/routes.php",
+        "APP_SERVICES_CACHE": "/tmp/services.php",
+        "VIEW_COMPILED_PATH": "/tmp",
+        "CACHE_DRIVER": "array",
+        "LOG_CHANNEL": "stderr",
+        "SESSION_DRIVER": "cookie",
+        "SSR_TEMP_PATH": "/tmp/ssr",
+        "NODE_PATH": "node",
+        "APP_NAME": "${APP_NAME}",
+        "APP_KEY": "${APP_KEY}",
+
+        "APP_LOCALE": "en",
+        "APP_FALLBACK_LOCALE": "en",
+        "APP_FAKER_LOCALE": "en_US",
+
+        "APP_MAINTENANCE_DRIVER": "file",
+        "APP_MAINTENANCE_STORE": "database",
+
+        "PHP_CLI_SERVER_WORKERS": "4",
+
+        "BCRYPT_ROUNDS": "12",
+
+        "LOG_STACK": "single",
+        "LOG_DEPRECATIONS_CHANNEL": "null",
+        "LOG_LEVEL": "debug",
+
+        "DB_CONNECTION": "mysql",
+        "DB_HOST": "${DB_HOST}",
+        "DB_PORT": "${DB_PORT}",
+        "DB_DATABASE": "${DB_DATABASE}",
+        "DB_USERNAME": "${DB_USERNAME}",
+        "DB_PASSWORD": "${DB_PASSWORD}",
+
+        "SESSION_LIFETIME": "120",
+        "SESSION_ENCRYPT": "false",
+        "SESSION_PATH": "/",
+        "SESSION_DOMAIN": "null",
+
+        "BROADCAST_CONNECTION": "log",
+        "FILESYSTEM_DISK": "local",
+        "QUEUE_CONNECTION": "database",
+
+        "CACHE_STORE": "database",
+        "CACHE_PREFIX": "",
+
+        "MEMCACHED_HOST": "${MEMCACHED_HOST}",
+
+        "REDIS_CLIENT": "phpredis",
+        "REDIS_HOST": "${REDIS_HOST}",
+        "REDIS_PASSWORD": "${REDIS_PASSWORD}",
+        "REDIS_PORT": "${REDIS_PORT}",
+
+        "MAIL_MAILER": "smtp",
+        "MAIL_HOST": "${MAIL_HOST}",
+        "MAIL_PORT": "${MAIL_PORT}",
+        "MAIL_USERNAME": "${MAIL_USERNAME}",
+        "MAIL_PASSWORD": "${MAIL_PASSWORD}",
+        "MAIL_ENCRYPTION": "tls",
+        "MAIL_FROM_ADDRESS": "${MAIL_FROM_ADDRESS}",
+        "MAIL_FROM_NAME": "${MAIL_FROM_NAME}",
+
+        "SMS_PROVIDER": "${SMS_PROVIDER}",
+        "TWILIO_SID": "${TWILIO_SID}",
+        "TWILIO_AUTH_TOKEN": "${TWILIO_AUTH_TOKEN}",
+        "TWILIO_FROM_NUMBER": "${TWILIO_FROM_NUMBER}",
+
+        "CHURCH_NAME": "${CHURCH_NAME}",
+        "CHURCH_ADDRESS": "${CHURCH_ADDRESS}",
+        "CHURCH_PHONE": "${CHURCH_PHONE}",
+        "CHURCH_EMAIL": "${CHURCH_EMAIL}",
+        "CHURCH_WEBSITE": "${CHURCH_WEBSITE}",
+        "CHURCH_TAX_ID": "${CHURCH_TAX_ID}",
+
+        "STRIPE_KEY": "${STRIPE_KEY}",
+        "STRIPE_SECRET": "${STRIPE_SECRET}",
+        "STRIPE_WEBHOOK_SECRET": "${STRIPE_WEBHOOK_SECRET}",
+        "STRIPE_CURRENCY": "${STRIPE_CURRENCY}",
+
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY}",
+        "AWS_DEFAULT_REGION": "${AWS_DEFAULT_REGION}",
+        "AWS_BUCKET": "${AWS_BUCKET}",
+        "AWS_USE_PATH_STYLE_ENDPOINT": "false",
+
+        "VITE_APP_NAME": "${VITE_APP_NAME}"
+    },
+    "builds": [
+        {
+            "src": "api/index.php",
+            "use": "vercel-php@0.7.3"
+        },
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
+        }
+    ]
+} 

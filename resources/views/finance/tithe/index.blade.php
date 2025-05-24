@@ -1,0 +1,193 @@
+@extends('layouts.app')
+
+@section('title', 'Tithe Records')
+
+@section('content')
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <!-- Page Header -->
+    <div class="mb-6 flex justify-between items-center">
+        <h2 class="text-2xl font-bold">Tithe Records</h2>
+        <a href="{{ route('finance.tithe.create') }}" class="btn btn-primary">
+            Record New Tithe
+        </a>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="card bg-white">
+            <h3 class="text-sm font-medium text-gray-500">Total Tithes (YTD)</h3>
+            <p class="mt-2 text-3xl font-bold" style="color: var(--color-teal)">
+                ${{ number_format($statistics->total_tithes ?? 0, 2) }}
+            </p>
+            <p class="mt-1 text-sm text-gray-500">
+                From {{ $statistics->total_members ?? 0 }} members
+            </p>
+        </div>
+
+        <div class="card bg-white">
+            <h3 class="text-sm font-medium text-gray-500">Average Monthly Tithe</h3>
+            <p class="mt-2 text-3xl font-bold" style="color: var(--color-burgundy)">
+                ${{ number_format($statistics->average_monthly ?? 0, 2) }}
+            </p>
+            <p class="mt-1 text-sm text-gray-500">
+                Per active member
+            </p>
+        </div>
+
+        <div class="card bg-white">
+            <h3 class="text-sm font-medium text-gray-500">This Month</h3>
+            <p class="mt-2 text-3xl font-bold" style="color: var(--color-crimson)">
+                ${{ number_format($statistics->current_month ?? 0, 2) }}
+            </p>
+            <p class="mt-1 text-sm text-gray-500">
+                {{ $statistics->current_month_members ?? 0 }} contributors
+            </p>
+        </div>
+
+        <div class="card bg-white">
+            <h3 class="text-sm font-medium text-gray-500">Growth Rate</h3>
+            <p class="mt-2 text-3xl font-bold" style="color: var(--color-teal)">
+                {{ number_format($statistics->growth_rate ?? 0, 1) }}%
+            </p>
+            <p class="mt-1 text-sm text-gray-500">
+                Compared to last year
+            </p>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-6">
+        <form action="{{ route('finance.tithe.index') }}" method="GET" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label for="member" class="form-label">Member</label>
+                    <select name="member" id="member" class="form-input">
+                        <option value="">All Members</option>
+                        @foreach($members ?? [] as $member)
+                            <option value="{{ $member->id }}" {{ request('member') == $member->id ? 'selected' : '' }}>
+                                {{ $member->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <label for="date_range" class="form-label">Date Range</label>
+                    <select name="date_range" id="date_range" class="form-input">
+                        <option value="this_month" {{ request('date_range') == 'this_month' ? 'selected' : '' }}>This Month</option>
+                        <option value="last_month" {{ request('date_range') == 'last_month' ? 'selected' : '' }}>Last Month</option>
+                        <option value="this_year" {{ request('date_range') == 'this_year' ? 'selected' : '' }}>This Year</option>
+                        <option value="last_year" {{ request('date_range') == 'last_year' ? 'selected' : '' }}>Last Year</option>
+                        <option value="custom" {{ request('date_range') == 'custom' ? 'selected' : '' }}>Custom Range</option>
+                    </select>
+                </div>
+
+                <div id="custom_dates" class="grid grid-cols-2 gap-2 {{ request('date_range') == 'custom' ? '' : 'hidden' }}">
+                    <div>
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" name="start_date" id="start_date" class="form-input" 
+                               value="{{ request('start_date') }}">
+                    </div>
+                    <div>
+                        <label for="end_date" class="form-label">End Date</label>
+                        <input type="date" name="end_date" id="end_date" class="form-input" 
+                               value="{{ request('end_date') }}">
+                    </div>
+                </div>
+
+                <div class="flex items-end">
+                    <button type="submit" class="btn btn-secondary w-full">Apply Filters</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tithe Records Table -->
+    <div class="card">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: var(--color-burgundy)">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: var(--color-burgundy)">Member</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: var(--color-burgundy)">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: var(--color-burgundy)">Income Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: var(--color-burgundy)">Payment Method</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: var(--color-burgundy)">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: var(--color-burgundy)">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($tithes ?? [] as $tithe)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                {{ $tithe->payment_date->format('M d, Y') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ $tithe->member->name }}</div>
+                                <div class="text-sm text-gray-500">ID: {{ $tithe->member->member_id }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" style="color: var(--color-teal)">
+                                ${{ number_format($tithe->amount, 2) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                {{ ucfirst($tithe->income_type) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                {{ ucfirst($tithe->payment_method) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    {{ $tithe->status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                    {{ ucfirst($tithe->status) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <div class="flex space-x-2">
+                                    <a href="{{ route('finance.tithe.show', $tithe) }}" class="text-indigo-600 hover:text-indigo-900">
+                                        View
+                                    </a>
+                                    <a href="{{ route('finance.tithe.edit', $tithe) }}" class="text-yellow-600 hover:text-yellow-900">
+                                        Edit
+                                    </a>
+                                    @if($tithe->status !== 'completed')
+                                        <form action="{{ route('finance.tithe.delete', $tithe) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900" 
+                                                    onclick="return confirm('Are you sure you want to delete this record?')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                                No tithe records found
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        @if(isset($tithes) && $tithes->hasPages())
+            <div class="mt-4">
+                {{ $tithes->links() }}
+            </div>
+        @endif
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    // Handle date range selection
+    document.getElementById('date_range').addEventListener('change', function() {
+        document.getElementById('custom_dates').classList.toggle('hidden', this.value !== 'custom');
+    });
+</script>
+@endpush
+@endsection
