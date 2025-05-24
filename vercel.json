@@ -10,19 +10,23 @@
     },
     "routes": [
         {
-            "src": "/assets/(.*)",
-            "dest": "/assets/$1"
-        },
-        {
             "src": "/build/(.*)",
             "dest": "/build/$1"
+        },
+        {
+            "src": "/assets/(.*)",
+            "dest": "/assets/$1"
         },
         {
             "src": "/(css|js)/(.*)",
             "dest": "/$1/$2"
         },
         {
-            "src": "/(.*)\\.(?:ico|gif|jpg|jpeg|png|webp|svg|css|js|woff2|woff|ttf)$",
+            "src": "/(favicon\\.ico|robots\\.txt|mix-manifest\\.json)",
+            "dest": "/$1"
+        },
+        {
+            "src": "/(.*)\\.(?:css|js|gif|jpg|jpeg|png|webp|svg|ico|woff2|woff|ttf|eot)$",
             "dest": "/$1"
         },
         {

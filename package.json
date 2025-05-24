@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build && cp -r public/* dist/ && composer install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan storage:link",
+        "build": "vite build && mkdir -p dist && cp -r public/* dist/ && cp public/.htaccess dist/ && composer install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan storage:link",
         "vercel-build": "npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache",
         "preview": "vite preview"
     },
