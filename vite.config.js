@@ -8,6 +8,7 @@ export default defineConfig({
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
+            publicDirectory: 'dist',
         }),
     ],
     css: {
@@ -25,5 +26,6 @@ export default defineConfig({
         rollupOptions: {
             input: ['resources/css/app.css', 'resources/js/app.js']
         }
-    }
+    },
+    publicDir: 'public',
 });
