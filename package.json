@@ -3,8 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build && npm run vercel-build",
-        "vercel-build": "php artisan config:cache && php artisan route:cache && php artisan view:cache",
+        "build": "vite build",
+        "vercel-build": "npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache",
         "preview": "vite preview"
     },
     "devDependencies": {

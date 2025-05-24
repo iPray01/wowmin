@@ -12,6 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Global middleware
+        $middleware->use([
+            \App\Http\Middleware\TrustProxies::class,
+            \App\Http\Middleware\HandleCors::class,
+            \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
+            \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+            \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        ]);
+
         $middleware->validateCsrfTokens();
         
         // Web middleware group
@@ -28,6 +37,20 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('api', [
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ]);
+
+        // Middleware aliases
+        $middleware->alias([
+            'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+            'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+            'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
+            'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+            'can' => \Illuminate\Auth\Middleware\Authorize::class,
+            'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+            'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+            'signed' => \App\Http\Middleware\ValidateSignature::class,
+            'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+            'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

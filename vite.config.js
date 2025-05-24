@@ -18,4 +18,12 @@ export default defineConfig({
             ],
         },
     },
+    build: {
+        outDir: 'public/build',
+        assetsDir: 'assets',
+        manifest: true,
+        rollupOptions: {
+            input: ['resources/css/app.css', 'resources/js/app.js']
+        }
+    }
 });
